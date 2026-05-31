@@ -30,6 +30,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Env File ###
-.env
