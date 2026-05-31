@@ -1,6 +1,5 @@
 package org.example.playhubbackend.common.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,17 +8,15 @@ import lombok.RequiredArgsConstructor;
 public class AppException extends RuntimeException {
 
     private final ErrorCode errorCode;
-    private final HttpServletRequest request;
 
     /*
     * @param errorCode: USER_NOT_FOUND
     * @param detail: "id=123"
     * @return: "User not found: id=123"
     * */
-    public AppException(ErrorCode errorCode, String detail, HttpServletRequest request) {
+    public AppException(ErrorCode errorCode, String detail) {
         super(errorCode.getMessage() + ": " + detail);
         this.errorCode = errorCode;
-        this.request = request;
     }
 
 }
