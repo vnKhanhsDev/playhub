@@ -1,9 +1,7 @@
 package org.example.playhubbackend.modules.user.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.playhubbackend.common.entity.BaseEntity;
 import org.example.playhubbackend.modules.user.enums.AccountStatus;
 
@@ -11,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "accounts")
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
