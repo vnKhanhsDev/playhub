@@ -19,15 +19,15 @@ public class ApiResponse <T> {
     private T data;
     private String errorCode;
     private String message;
-    private Instant timestamp;
     private String path;
+    private Instant timestamp;
 
     public static <T> ApiResponse<T> success(T data, HttpServletRequest request) {
         return ApiResponse.<T>builder()
                 .success(true)
                 .data(data)
-                .timestamp(Instant.now())
                 .path(request.getRequestURI())
+                .timestamp(Instant.now())
                 .build();
     }
 
@@ -36,8 +36,8 @@ public class ApiResponse <T> {
                 .success(false)
                 .errorCode(errorCode.name())
                 .message(errorCode.getMessage())
-                .timestamp(Instant.now())
                 .path(request.getRequestURI())
+                .timestamp(Instant.now())
                 .build();
     }
 
