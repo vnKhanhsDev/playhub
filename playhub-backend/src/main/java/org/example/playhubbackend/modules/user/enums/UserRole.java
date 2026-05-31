@@ -1,4 +1,4 @@
-package org.example.playhubbackend.modules.user;
+package org.example.playhubbackend.modules.user.enums;
 
 public enum UserRole {
     PLAYER,
