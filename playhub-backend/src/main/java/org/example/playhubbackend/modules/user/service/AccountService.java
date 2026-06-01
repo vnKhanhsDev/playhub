@@ -26,13 +26,12 @@ public class AccountService {
         Account account = accountRepository.findByEmail(email).orElse(null);
 
         if (account != null && account.getStatus() != AccountStatus.PENDING_VERIFY) {
-            throw new AppException(ErrorCode.ACCOUNT_EXISTED, request);
+            throw new AppException(ErrorCode.ACCOUNT_EXISTED);
         }
 
         if (account == null) {
             createLocalAccount(email, password);
         }
-
     }
 
     public void createLocalAccount(String email, String password) {
@@ -43,12 +42,7 @@ public class AccountService {
                         .build()
         );
 
-        accountRoleRepository.save(
-                AccountRole.builder()
-                        .account(newAccount)
-                        .role(UserRole.PLAYER)
-                        .build()
-        );
+        newAccount.addRole(UserRole.PLAYER);
     }
 
 }
