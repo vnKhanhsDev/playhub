@@ -3,7 +3,7 @@ package org.example.playhubbackend.modules.auth.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.example.playhubbackend.modules.user.UserRole;
+import org.example.playhubbackend.modules.user.enums.UserRole;
 
 public record RegisterRequest(
 
