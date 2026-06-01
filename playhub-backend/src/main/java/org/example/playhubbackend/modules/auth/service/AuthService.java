@@ -1,22 +1,29 @@
 package org.example.playhubbackend.modules.auth.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.example.playhubbackend.common.response.ApiResponse;
+import lombok.RequiredArgsConstructor;
+import org.example.playhubbackend.infrastructure.mail.MailService;
 import org.example.playhubbackend.modules.auth.dto.RegisterRequest;
-import org.springframework.http.ResponseEntity;
+import org.example.playhubbackend.modules.auth.enums.OtpType;
+import org.example.playhubbackend.modules.user.service.AccountService;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    public ResponseEntity<ApiResponse<?>> register(RegisterRequest request, HttpServletRequest httpRequest) {
+    private final AccountService accountService;
+    private final OtpService otpService;
+    private final MailService mailService;
+
+    public void register(RegisterRequest request) {
         // registerAccount (module user)
+        accountService.registerLocalAccount(request.email(), request.password());
 
         // generate OTP code (otp service)
+        String otpCode = otpService.generateAndSaveOtp(request.email(), OtpType.REGISTER);
 
         // send OTP code (mail service)
-
-        return null;
+        mailService.sendRegistrationEmail(request.email(), otpCode);
     }
 
 }
