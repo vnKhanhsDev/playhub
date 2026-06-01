@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.playhubbackend.common.exception.AppException;
 import org.example.playhubbackend.common.exception.ErrorCode;
 import org.example.playhubbackend.modules.user.entity.Account;
-import org.example.playhubbackend.modules.user.enums.AccountStatus;
 import org.example.playhubbackend.modules.user.enums.UserRole;
 import org.example.playhubbackend.modules.user.repository.AccountRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,15 +18,11 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public void registerLocalAccount(String email, String password) {
-        Account account = accountRepository.findByEmail(email).orElse(null);
-
-        if (account != null && account.getStatus() != AccountStatus.PENDING_VERIFY) {
-            throw new AppException(ErrorCode.ACCOUNT_EXISTED);
+        if (accountRepository.existsByEmail(email)) {
+            throw new AppException(ErrorCode.ACCOUNT_EXISTED, "email: " + email);
         }
 
-        if (account == null) {
-            createLocalAccount(email, password);
-        }
+        createLocalAccount(email, password);
     }
 
     public void createLocalAccount(String email, String password) {
