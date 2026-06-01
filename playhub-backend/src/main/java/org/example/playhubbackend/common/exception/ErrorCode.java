@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public enum ErrorCode {
 
+    ACCOUNT_EXISTED(HttpStatus.CONFLICT, "Account already exists"),
+
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid credentials")
 
     ;
