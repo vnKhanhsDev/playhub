@@ -1,15 +1,12 @@
 package org.example.playhubbackend.modules.user.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.playhubbackend.common.exception.AppException;
 import org.example.playhubbackend.common.exception.ErrorCode;
 import org.example.playhubbackend.modules.user.entity.Account;
-import org.example.playhubbackend.modules.user.entity.AccountRole;
 import org.example.playhubbackend.modules.user.enums.AccountStatus;
 import org.example.playhubbackend.modules.user.enums.UserRole;
 import org.example.playhubbackend.modules.user.repository.AccountRepository;
-import org.example.playhubbackend.modules.user.repository.AccountRoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +15,10 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final AccountRoleRepository accountRoleRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public void registerLocalAccount(String email, String password, HttpServletRequest request) {
+    public void registerLocalAccount(String email, String password) {
         Account account = accountRepository.findByEmail(email).orElse(null);
 
         if (account != null && account.getStatus() != AccountStatus.PENDING_VERIFY) {
