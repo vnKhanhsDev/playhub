@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.playhubbackend.common.exception.ErrorCode;
 
 import java.time.Instant;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
