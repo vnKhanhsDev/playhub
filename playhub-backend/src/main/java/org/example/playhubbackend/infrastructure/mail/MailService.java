@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -15,6 +16,7 @@ public class MailService {
 
     private final JavaMailSender mailSender;
 
+    @Async("emailExecutor")
     public void sendRegistrationEmail(String toEmail, String otpCode) {
         String subject = "Registration OTP Code";
         String content = "Your OTP code is: " + otpCode;
