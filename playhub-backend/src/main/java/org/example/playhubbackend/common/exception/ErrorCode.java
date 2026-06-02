@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public enum ErrorCode {
 
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "Validation failed"),
+
     ACCOUNT_EXISTED(HttpStatus.CONFLICT, "Account already exists"),
     ACCOUNT_NOT_PENDING_VERIFY(HttpStatus.BAD_REQUEST, "Account is not pending verify"),
 

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.example.playhubbackend.common.exception.ErrorCode;
 
 import java.time.Instant;
+import java.util.Map;
 
 @Getter
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class ApiResponse <T> {
     private T data;
     private String errorCode;
     private String message;
+    private Map<String, String> errors;
     private String path;
     private Instant timestamp;
 
@@ -38,6 +40,21 @@ public class ApiResponse <T> {
                 .success(false)
                 .errorCode(errorCode.name())
                 .message(errorCode.getMessage())
+                .path(request.getRequestURI())
+                .timestamp(Instant.now())
+                .build();
+    }
+
+    public static <T> ApiResponse<T> error(
+            Map<String, String> errors,
+            ErrorCode errorCode,
+            HttpServletRequest request
+    ) {
+        return ApiResponse.<T>builder()
+                .success(false)
+                .errorCode(errorCode.name())
+                .message(errorCode.getMessage())
+                .errors(errors)
                 .path(request.getRequestURI())
                 .timestamp(Instant.now())
                 .build();
