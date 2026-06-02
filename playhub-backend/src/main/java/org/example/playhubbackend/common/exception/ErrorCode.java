@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     ACCOUNT_EXISTED(HttpStatus.CONFLICT, "Account already exists"),
+    ACCOUNT_NOT_PENDING_VERIFY(HttpStatus.BAD_REQUEST, "Account is not pending verify"),
 
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid credentials")
 
