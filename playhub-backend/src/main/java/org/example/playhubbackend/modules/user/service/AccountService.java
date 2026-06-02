@@ -17,22 +17,22 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void registerLocalAccount(String email, String password) {
+    public Account registerLocalAccount(String email, String password) {
         Account account = accountRepository.findByEmail(email).orElse(null);
 
         if (account != null) {
             if (account.getStatus() != AccountStatus.PENDING_VERIFY) {
                 throw new AppException(ErrorCode.ACCOUNT_EXISTED, "email=" + email);
             }
-
+            // Update password in case of registration retry with a different password
             account.updatePassword(passwordEncoder.encode(password));
-            accountRepository.save(account);
+            return accountRepository.save(account);
         }
 
-        createLocalAccount(email, password);
+        return createLocalAccount(email, password);
     }
 
-    public void createLocalAccount(String email, String password) {
+    public Account createLocalAccount(String email, String password) {
         Account newAccount = Account.builder()
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
@@ -40,7 +40,7 @@ public class AccountService {
 
         newAccount.addRole(UserRole.PLAYER);
 
-        accountRepository.save(newAccount);
+        return accountRepository.save(newAccount);
     }
 
 }
