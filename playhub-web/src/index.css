@@ -1,18 +1,21 @@
+@import './variables.css';
+
 /* Global & Reset Styles */
 :root {
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --bg-color: #f8fafc;
-  --card-bg: #ffffff;
-  --text-color: #1e293b;
-  --text-light: #64748b;
-  --border-color: #e2e8f0;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --danger-color: #ef4444;
+  --primary-color: var(--color-primary-600);
+  --primary-hover: var(--color-primary-700);
+  --bg-color: var(--color-background-page);
+  --card-bg: var(--color-background-primary);
+  --text-color: var(--color-text-primary);
+  --text-light: var(--color-text-secondary);
+  --border-color: var(--color-border-secondary);
+  --success-color: var(--color-success-main);
+  --warning-color: var(--color-warning-main);
+  --danger-color: var(--color-danger-main);
   --sidebar-width: 240px;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-sans);
 }
+
 
 * {
   box-sizing: border-box;
