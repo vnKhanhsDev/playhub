@@ -17,7 +17,20 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Activate account for registration, unban account, etc.
+    public void registerLocalAccount(String email, String password) {
+        Account account = getAccountNotLocked(email);
+
+        if (account != null) {
+            if (account.getStatus() == AccountStatus.ACTIVE) {
+                throw new AppException(ErrorCode.ACCOUNT_EXISTED);
+            }
+            account.updatePassword(passwordEncoder.encode(password));
+            accountRepository.save(account);
+        } else {
+            createLocalAccount(email, password);
+        }
+    }
+
     public void activateAccount(String email) {
         Account account = getAccountByEmail(email);
         account.activate();
@@ -30,40 +43,28 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    /*
-    * Get account by email
-    * @return: Account
-    * @throws AppException: if account not found
-    * */
-    private Account getAccountByEmail(String email) {
-        return accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND, "email=" + email));
-    }
-
-    public void registerLocalAccount(String email, String password) {
+    private Account getAccountNotLocked(String email) {
         Account account = accountRepository.findByEmail(email).orElse(null);
 
-        if (account != null) {
-            if (account.getStatus() != AccountStatus.PENDING_VERIFY) {
-                throw new AppException(ErrorCode.ACCOUNT_EXISTED, "email=" + email);
-            }
-
-            account.updatePassword(passwordEncoder.encode(password));
-            accountRepository.save(account);
+        if (account != null && account.getStatus() == AccountStatus.LOCKED) {
+            throw new AppException(ErrorCode.ACCOUNT_LOCKED);
         }
 
-        createLocalAccount(email, password);
+        return account;
     }
 
-    public void createLocalAccount(String email, String password) {
+    private void createLocalAccount(String email, String password) {
         Account newAccount = Account.builder()
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .build();
-
         newAccount.addRole(UserRole.PLAYER);
-
         accountRepository.save(newAccount);
+    }
+
+    private Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND, "email=" + email));
     }
 
 }

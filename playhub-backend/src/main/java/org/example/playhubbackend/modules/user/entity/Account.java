@@ -42,9 +42,7 @@ public class Account extends BaseEntity {
         this.status = AccountStatus.ACTIVE;
     }
 
-    public void updatePassword(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+    public void updatePassword(String passwordHash) { this.passwordHash = passwordHash; }
 
     public boolean hasRole(UserRole role) {
         return roles.stream().map(AccountRole::getRole).anyMatch(role::equals);

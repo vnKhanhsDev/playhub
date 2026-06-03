@@ -14,6 +14,7 @@ public enum ErrorCode {
 
     ACCOUNT_EXISTED(HttpStatus.CONFLICT, "Account already exists"),
     ACCOUNT_NOT_PENDING_VERIFY(HttpStatus.BAD_REQUEST, "Account is not pending verify"),
+    ACCOUNT_LOCKED(HttpStatus.FORBIDDEN, "Account is locked"),
 
     OTP_RESEND_TOO_FREQUENTLY(HttpStatus.TOO_MANY_REQUESTS, "Otp resend too frequently"),
     OTP_NOT_FOUND(HttpStatus.NOT_FOUND, "OTP not found"),
