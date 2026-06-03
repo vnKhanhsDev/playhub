@@ -17,14 +17,27 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /*
-    * Activate account for registration, unban account, etc.
-    * */
+    // Activate account for registration, unban account, etc.
     public void activateAccount(String email) {
-        Account account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND, "email=" + email));
+        Account account = getAccountByEmail(email);
         account.activate();
         accountRepository.save(account);
+    }
+
+    public void changePassword(String email, String newPassword) {
+        Account account = getAccountByEmail(email);
+        account.updatePassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    /*
+    * Get account by email
+    * @return: Account
+    * @throws AppException: if account not found
+    * */
+    private Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND, "email=" + email));
     }
 
     public void registerLocalAccount(String email, String password) {
