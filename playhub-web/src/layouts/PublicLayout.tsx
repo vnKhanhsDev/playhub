@@ -16,40 +16,66 @@ export const PublicLayout: React.FC = () => {
 
   return (
     <div className="layout public-layout">
-      <header className="header">
-        <div className="container header-container">
-          <Link to="/" className="logo-text">PlayHub</Link>
-          <nav className="nav">
-            <Link to="/courts" className="nav-link">Sân thể thao</Link>
+      {/* SportField Premium Navbar */}
+      <nav className="nav-ds">
+        <div className="nav-container-ds">
+          <Link to="/" className="nav-logo-ds">
+            <div className="nav-logo-icon-ds">
+              <i className="ti ti-ball-football" aria-hidden="true"></i>
+            </div>
+            <span className="nav-logo-text-ds">SportField</span>
+          </Link>
+          
+          <div className="nav-links-ds">
+            <Link to="/courts" className="nav-link-item-ds">Khám phá sân</Link>
+            <span className="nav-link-item-ds" onClick={() => alert('Chức năng Giải đấu sắp ra mắt!')}>Giải đấu</span>
+            <span className="nav-link-item-ds" onClick={() => alert('Cộng đồng thể thao đang được phát triển!')}>Cộng đồng</span>
             {token && user ? (
               <>
-                <Link to="/booking-history" className="nav-link">Lịch sử đặt sân</Link>
+                <Link to="/booking-history" className="nav-link-item-ds">Lịch sử đặt sân</Link>
                 {user.role === 'OWNER' && (
-                  <Link to="/owner/dashboard" className="nav-link btn-dashboard">Chủ Sân Dashboard</Link>
+                  <Link to="/owner/dashboard" className="nav-link-item-ds special-link">Cho chủ sân</Link>
                 )}
                 {user.role === 'ADMIN' && (
-                  <Link to="/admin/dashboard" className="nav-link btn-dashboard">Admin Dashboard</Link>
+                  <Link to="/admin/dashboard" className="nav-link-item-ds special-link">Hệ thống Admin</Link>
                 )}
-                <span className="user-welcome">Xin chào, {user.fullName || user.username}</span>
-                <button onClick={handleLogout} className="btn-logout">Đăng xuất</button>
+              </>
+            ) : (
+              <Link to="/login" className="nav-link-item-ds">Cho chủ sân</Link>
+            )}
+          </div>
+
+          <div className="nav-actions-ds">
+            {token && user ? (
+              <>
+                <span className="user-welcome-ds">Xin chào, {user.fullName || user.username}</span>
+                <button onClick={handleLogout} className="btn-logout-ds">Đăng xuất</button>
               </>
             ) : (
               <>
-                <Link to="/login" className="nav-link">Đăng nhập</Link>
-                <Link to="/register" className="nav-link btn-register">Đăng ký</Link>
+                <button className="btn-login-ds" onClick={() => navigate('/login')}>Đăng nhập</button>
+                <button className="btn-register-ds" onClick={() => navigate('/register')}>Đăng ký</button>
               </>
             )}
-          </nav>
+          </div>
         </div>
-      </header>
+      </nav>
 
-      <main className="main-content container">
+      {/* Main Content Area */}
+      <main className="main-content-ds">
         <Outlet />
       </main>
 
-      <footer className="footer">
-        <div className="container footer-container">
-          <p>&copy; {new Date().getFullYear()} PlayHub. Hỗ trợ đặt sân và kết nối thể thao hàng đầu.</p>
+      {/* SportField Dark Footer */}
+      <footer className="footer-ds">
+        <div className="footer-container-ds">
+          <div className="footer-logo-ds">SportField</div>
+          <div className="footer-copy-ds">© {new Date().getFullYear()} SportField. All rights reserved.</div>
+          <div className="footer-links-ds">
+            <span className="footer-link-item-ds" onClick={() => alert('Điều khoản sử dụng')}>Điều khoản</span>
+            <span className="footer-link-item-ds" onClick={() => alert('Chính sách bảo mật')}>Bảo mật</span>
+            <span className="footer-link-item-ds" onClick={() => alert('Liên hệ: support@sportfield.com')}>Liên hệ</span>
+          </div>
         </div>
       </footer>
     </div>
