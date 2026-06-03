@@ -37,6 +37,20 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    public boolean canLoginImmediately(String email, String password) {
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (!passwordEncoder.matches(password, account.getPasswordHash()))
+            throw new AppException(ErrorCode.PASSWORD_INCORRECT);
+
+        switch (account.getStatus()) {
+            case AccountStatus.PENDING_VERIFY -> { return false; }
+            case AccountStatus.ACTIVE -> { return true; }
+            default -> throw new AppException(ErrorCode.ACCOUNT_LOCKED);
+        }
+    }
+
     public void changePassword(String email, String newPassword) {
         Account account = getAccountByEmail(email);
         account.updatePassword(passwordEncoder.encode(newPassword));
