@@ -18,16 +18,22 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public void registerLocalAccount(String email, String password) {
-        Account account = getAccountNotLocked(email);
+        Account account = accountRepository.findByEmail(email).orElse(null);
 
-        if (account != null) {
-            if (account.getStatus() == AccountStatus.ACTIVE) {
+        if (account == null) {
+            Account newAccount = Account.builder()
+                    .email(email)
+                    .passwordHash(passwordEncoder.encode(password))
+                    .build();
+            newAccount.addRole(UserRole.PLAYER);
+            accountRepository.save(newAccount);
+        } else {
+            if (account.getStatus() == AccountStatus.PENDING_VERIFY) {
+                account.updatePassword(passwordEncoder.encode(password));
+                accountRepository.save(account);
+            } else {
                 throw new AppException(ErrorCode.ACCOUNT_EXISTED);
             }
-            account.updatePassword(passwordEncoder.encode(password));
-            accountRepository.save(account);
-        } else {
-            createLocalAccount(email, password);
         }
     }
 
@@ -55,25 +61,6 @@ public class AccountService {
         Account account = getAccountByEmail(email);
         account.updatePassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account);
-    }
-
-    private Account getAccountNotLocked(String email) {
-        Account account = accountRepository.findByEmail(email).orElse(null);
-
-        if (account != null && account.getStatus() == AccountStatus.LOCKED) {
-            throw new AppException(ErrorCode.ACCOUNT_LOCKED);
-        }
-
-        return account;
-    }
-
-    private void createLocalAccount(String email, String password) {
-        Account newAccount = Account.builder()
-                .email(email)
-                .passwordHash(passwordEncoder.encode(password))
-                .build();
-        newAccount.addRole(UserRole.PLAYER);
-        accountRepository.save(newAccount);
     }
 
     private Account getAccountByEmail(String email) {
