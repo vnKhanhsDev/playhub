@@ -17,30 +17,57 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // Flow registers local account for registration feature
     public void registerLocalAccount(String email, String password) {
         Account account = accountRepository.findByEmail(email).orElse(null);
 
-        if (account != null) {
-            if (account.getStatus() != AccountStatus.PENDING_VERIFY) {
-                throw new AppException(ErrorCode.ACCOUNT_EXISTED, "email=" + email);
+        if (account == null) {
+            Account newAccount = Account.builder()
+                    .email(email)
+                    .passwordHash(passwordEncoder.encode(password))
+                    .build();
+            newAccount.addRole(UserRole.PLAYER);
+            accountRepository.save(newAccount);
+        } else {
+            if (account.getStatus() == AccountStatus.PENDING_VERIFY) {
+                account.updatePassword(passwordEncoder.encode(password));
+                accountRepository.save(account);
+            } else {
+                throw new AppException(ErrorCode.ACCOUNT_EXISTED);
             }
-
-            account.updatePassword(passwordEncoder.encode(password));
-            accountRepository.save(account);
         }
-
-        createLocalAccount(email, password);
     }
 
-    public void createLocalAccount(String email, String password) {
-        Account newAccount = Account.builder()
-                .email(email)
-                .passwordHash(passwordEncoder.encode(password))
-                .build();
+    // Flow activates account after email verification for registration feature
+    public void activateAccount(String email) {
+        Account account = getAccountByEmail(email);
+        account.activate();
+        accountRepository.save(account);
+    }
 
-        newAccount.addRole(UserRole.PLAYER);
+    // Flow verifies email + password for login feature
+    public void verifyCredentials(String email, String password) {
+        Account account = accountRepository.findByEmail(email).orElse(null);
 
-        accountRepository.save(newAccount);
+        if (account == null || !passwordEncoder.matches(password, account.getPasswordHash())) {
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS);
+        }
+
+        switch (account.getStatus()) {
+            case AccountStatus.PENDING_VERIFY -> throw new AppException(ErrorCode.ACCOUNT_PENDING_VERIFY);
+            case AccountStatus.LOCKED -> throw new AppException(ErrorCode.ACCOUNT_LOCKED);
+        }
+    }
+
+    public void changePassword(String email, String newPassword) {
+        Account account = getAccountByEmail(email);
+        account.updatePassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    private Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND, "email=" + email));
     }
 
 }
