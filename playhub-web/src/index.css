@@ -58,10 +58,6 @@ a:hover {
   min-height: 100vh;
 }
 
-/* Public Layout */
-.public-layout {
-  background-color: var(--bg-color);
-}
 
 .header {
   background-color: var(--card-bg);
@@ -779,6 +775,7 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+
 .nav-container-ds {
   width: 100%;
   max-width: var(--layout-container-max);
@@ -900,9 +897,6 @@ a:hover {
   color: white;
 }
 
-.main-content-ds {
-  flex: 1;
-}
 
 /* Hero Section */
 .hero-banner {
@@ -1404,49 +1398,5 @@ a:hover {
   font-size: var(--font-size-caption);
   color: var(--color-text-secondary);
   line-height: 1.5;
-}
-
-/* Footer Option C style */
-.footer-ds {
-  background-color: var(--color-neutral-900);
-  padding: var(--spacing-5) var(--spacing-8);
-  border-top: 0.5px solid var(--color-neutral-800);
-}
-
-.footer-container-ds {
-  max-width: var(--layout-container-max);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacing-4);
-  flex-wrap: wrap;
-}
-
-.footer-logo-ds {
-  color: white;
-  font-size: var(--font-size-body);
-  font-weight: 500;
-}
-
-.footer-copy-ds {
-  color: var(--color-neutral-500);
-  font-size: var(--font-size-caption);
-}
-
-.footer-links-ds {
-  display: flex;
-  gap: var(--spacing-4);
-}
-
-.footer-link-item-ds {
-  color: var(--color-neutral-500);
-  font-size: var(--font-size-caption);
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.footer-link-item-ds:hover {
-  color: white;
 }
 

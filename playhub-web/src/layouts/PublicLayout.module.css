@@ -1,0 +1,270 @@
+/* ==========================================================================
+   PublicLayout — CSS Module
+   Extracted from index.css + subnav white background
+   ========================================================================== */
+
+/* Layout wrapper */
+.publicLayout {
+  background-color: var(--bg-color);
+}
+
+/* ==========================================================================
+   HEADER — Sub-Nav + Main-Nav
+   ========================================================================== */
+
+/* Header wrapper — sticky with both tiers */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+/* --- Sub Navigation (Top Bar) — White background --- */
+.subnav {
+  background-color: var(--color-background-primary);
+}
+
+.subnavContainer {
+  max-width: var(--layout-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 34px;
+}
+
+.subnavLeft,
+.subnavRight {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.subnavDivider {
+  color: var(--color-neutral-200);
+  font-size: 11px;
+  padding: 1px 10px 0;
+  user-select: none;
+  line-height: 1;
+}
+
+.subnavLink {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.subnavLink:hover {
+  color: var(--color-primary-600);
+  text-decoration: none;
+}
+
+.subnavLink i {
+  font-size: 13px;
+}
+
+.subnavUser {
+  composes: subnavLink;
+  color: var(--color-primary-600);
+  font-weight: 500;
+}
+
+.subnavLogout {
+  composes: subnavLink;
+  color: var(--color-danger-main);
+}
+
+.subnavLogout:hover {
+  color: var(--color-danger-text);
+}
+
+/* --- Main Navigation --- */
+.mainnav {
+  background-color: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.mainnavContainer {
+  max-width: var(--layout-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  gap: var(--spacing-8);
+}
+
+/* Logo */
+.mainnavLogo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.mainnavLogo:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.logoImg {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Navigation Links */
+.mainnavLinks {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-1);
+  flex: 1;
+  justify-content: center;
+}
+
+.mainnavLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+}
+
+.mainnavLink i {
+  font-size: 17px;
+  transition: color 0.2s ease;
+}
+
+.mainnavLink:hover {
+  color: var(--color-primary-600);
+  background-color: var(--color-primary-50);
+  text-decoration: none;
+}
+
+.mainnavLink:hover i {
+  color: var(--color-primary-600);
+}
+
+/* Active state for current page */
+.mainnavLinkActive {
+  composes: mainnavLink;
+  color: var(--color-primary-600);
+  background-color: var(--color-primary-50);
+  font-weight: 600;
+}
+
+/* Booking Icon & Action */
+.mainnavActions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.bookingIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: 1px solid var(--color-border-secondary);
+  background-color: transparent;
+}
+
+.bookingIcon i {
+  font-size: 18px;
+  color: var(--color-primary-600);
+}
+
+.bookingIcon:hover {
+  color: var(--color-primary-600);
+  border-color: var(--color-primary-300);
+  background-color: var(--color-primary-50);
+  text-decoration: none;
+}
+
+.bookingLabel {
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   MAIN CONTENT
+   ========================================================================== */
+.mainContent {
+  flex: 1;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer {
+  background-color: var(--color-neutral-900);
+  padding: var(--spacing-5) var(--spacing-8);
+  border-top: 0.5px solid var(--color-neutral-800);
+}
+
+.footerContainer {
+  max-width: var(--layout-container-max);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.footerLogo {
+  color: white;
+  font-size: var(--font-size-body);
+  font-weight: 500;
+}
+
+.footerCopy {
+  color: var(--color-neutral-500);
+  font-size: var(--font-size-caption);
+}
+
+.footerLinks {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.footerLinkItem {
+  color: var(--color-neutral-500);
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footerLinkItem:hover {
+  color: white;
+}
