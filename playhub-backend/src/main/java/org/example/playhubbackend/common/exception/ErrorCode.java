@@ -13,6 +13,8 @@ public enum ErrorCode {
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "Validation failed"),
 
     ACCOUNT_EXISTED(HttpStatus.CONFLICT, "Account already exists"),
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account not found"),
+    ACCOUNT_PENDING_VERIFY(HttpStatus.BAD_REQUEST, "Account is pending verify"),
     ACCOUNT_NOT_PENDING_VERIFY(HttpStatus.BAD_REQUEST, "Account is not pending verify"),
     ACCOUNT_LOCKED(HttpStatus.FORBIDDEN, "Account is locked"),
 
@@ -26,7 +28,6 @@ public enum ErrorCode {
     AUTH_FLOW_EXPIRED(HttpStatus.UNAUTHORIZED, "Auth flow session has expired or is invalid"),
     INVALID_AUTH_FLOW_STATE(HttpStatus.BAD_REQUEST, "Invalid auth flow state"),
 
-    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account not found"),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid credentials")
 
     ;
