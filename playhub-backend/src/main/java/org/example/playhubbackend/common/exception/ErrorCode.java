@@ -23,8 +23,6 @@ public enum ErrorCode {
     OTP_MAX_ATTEMPTS(HttpStatus.TOO_MANY_REQUESTS, "OTP has been used too many times"),
     OTP_INCORRECT(HttpStatus.BAD_REQUEST, "Incorrect OTP code"),
 
-    PASSWORD_INCORRECT(HttpStatus.BAD_REQUEST, "Incorrect password"),
-
     AUTH_FLOW_EXPIRED(HttpStatus.UNAUTHORIZED, "Auth flow session has expired or is invalid"),
     INVALID_AUTH_FLOW_STATE(HttpStatus.BAD_REQUEST, "Invalid auth flow state"),
 

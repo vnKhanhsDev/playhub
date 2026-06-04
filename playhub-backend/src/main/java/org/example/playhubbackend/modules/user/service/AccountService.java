@@ -17,6 +17,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // Flow registers local account for registration feature
     public void registerLocalAccount(String email, String password) {
         Account account = accountRepository.findByEmail(email).orElse(null);
 
@@ -37,6 +38,7 @@ public class AccountService {
         }
     }
 
+    // Flow activates account after email verification for registration feature
     public void activateAccount(String email) {
         Account account = getAccountByEmail(email);
         account.activate();
