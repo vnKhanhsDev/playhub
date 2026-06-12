@@ -147,5 +147,102 @@ public class AccountServiceTest {
         assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, exception.getErrorCode());
         verify(accountRepository, never()).save(any(Account.class));
     }
+    @Test
+    void shouldVerifyCredentialsSuccessfully() {
+        String email = "test@gmail.com";
+        String password = "testPassword";
+        String passwordHash = "hashedPassword";
+
+        Account account = Account.builder()
+                .email(email)
+                .passwordHash(passwordHash)
+                .status(AccountStatus.ACTIVE)
+                .build();
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches(password, passwordHash)).thenReturn(true);
+
+        assertDoesNotThrow(() -> accountService.verifyCredentials(email, password));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenVerifyCredentialsAndAccountNotFound() {
+        String email = "notfound@gmail.com";
+        String password = "password";
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        AppException exception = assertThrows(AppException.class, () ->
+                accountService.verifyCredentials(email, password)
+        );
+
+        assertEquals(ErrorCode.INVALID_CREDENTIALS, exception.getErrorCode());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenVerifyCredentialsAndPasswordIncorrect() {
+        String email = "test@gmail.com";
+        String password = "wrongPassword";
+        String passwordHash = "hashedPassword";
+
+        Account account = Account.builder()
+                .email(email)
+                .passwordHash(passwordHash)
+                .status(AccountStatus.ACTIVE)
+                .build();
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches(password, passwordHash)).thenReturn(false);
+
+        AppException exception = assertThrows(AppException.class, () ->
+                accountService.verifyCredentials(email, password)
+        );
+
+        assertEquals(ErrorCode.INVALID_CREDENTIALS, exception.getErrorCode());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenVerifyCredentialsAndAccountPendingVerify() {
+        String email = "test@gmail.com";
+        String password = "testPassword";
+        String passwordHash = "hashedPassword";
+
+        Account account = Account.builder()
+                .email(email)
+                .passwordHash(passwordHash)
+                .status(AccountStatus.PENDING_VERIFY)
+                .build();
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches(password, passwordHash)).thenReturn(true);
+
+        AppException exception = assertThrows(AppException.class, () ->
+                accountService.verifyCredentials(email, password)
+        );
+
+        assertEquals(ErrorCode.ACCOUNT_PENDING_VERIFY, exception.getErrorCode());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenVerifyCredentialsAndAccountLocked() {
+        String email = "test@gmail.com";
+        String password = "testPassword";
+        String passwordHash = "hashedPassword";
+
+        Account account = Account.builder()
+                .email(email)
+                .passwordHash(passwordHash)
+                .status(AccountStatus.LOCKED)
+                .build();
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches(password, passwordHash)).thenReturn(true);
+
+        AppException exception = assertThrows(AppException.class, () ->
+                accountService.verifyCredentials(email, password)
+        );
+
+        assertEquals(ErrorCode.ACCOUNT_LOCKED, exception.getErrorCode());
+    }
 
 }
