@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: playhub-backend-test
+
+  datasource:
+    url: jdbc:h2:mem:playhub_test_db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+  mail:
+    host: localhost
+    port: 25
+    username: mock-mail
+    password: mock-password
+    protocol: smtp
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+app:
+  jwt:
+    signer-key: e2639cd3386d24172c7e92f6e3190afaf3457c910ac2819e7cc782360919f2a6
+    access-expiration: 900000
+    refresh-expiration: 604800000
+
+  cloudinary:
+    cloud-name: mock-cloudinary
+    api-key: 12345
+    api-secret: secret
+
+  async:
+    email:
+      core-pool-size: 5
+      max-pool-size: 20
+      queue-capacity: 100
+      keep-alive-seconds: 60
