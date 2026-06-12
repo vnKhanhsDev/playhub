@@ -98,4 +98,54 @@ public class AccountServiceTest {
         verify(accountRepository, never()).save(any(Account.class));
     }
 
+    @Test
+    void shouldActivateAccountSuccessfully() {
+        String email = "test@gmail.com";
+
+        Account account = Account.builder()
+                .email(email)
+                .status(AccountStatus.PENDING_VERIFY)
+                .build();
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+
+        accountService.activateAccount(email);
+
+        assertEquals(AccountStatus.ACTIVE, account.getStatus());
+        verify(accountRepository).save(account);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenActivateAccountNotPendingVerify() {
+        String email = "test@gmail.com";
+
+        Account account = Account.builder()
+                .email(email)
+                .status(AccountStatus.ACTIVE)
+                .build();
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.of(account));
+
+        AppException exception = assertThrows(AppException.class, () ->
+                accountService.activateAccount(email)
+        );
+
+        assertEquals(ErrorCode.ACCOUNT_NOT_PENDING_VERIFY, exception.getErrorCode());
+        verify(accountRepository, never()).save(any(Account.class));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAccountNotFound() {
+        String email = "notfound@gmail.com";
+
+        when(accountRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        AppException exception = assertThrows(AppException.class, () ->
+                accountService.activateAccount(email)
+        );
+
+        assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, exception.getErrorCode());
+        verify(accountRepository, never()).save(any(Account.class));
+    }
+
 }
